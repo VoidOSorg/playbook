@@ -1,0 +1,38 @@
+---
+title: Customization
+description: Themes, wallpapers and branding
+privilege: TrustedInstaller
+
+actions:
+
+- !writeStatus: {status: "Applying paths"}
+- !powerShell:
+    exeDir: true
+    wait: true
+    command: .\prepare-voidos-wallpaper.ps1
+ 
+- !powerShell:
+    command: .\COPY-CONFIGURATOR.ps1
+    exeDir: true
+    wait: true
+    runas: currentUser
+
+
+
+
+- !writeStatus: {status: "Applying VoidOS Themes"}
+
+- !powerShell:
+    exeDir: true
+    wait: true
+    command: |
+      Start-Process "C:\Windows\Resources\Themes\voidos.theme"
+
+
+- !writeStatus: {status: "Applying VoidOS Branding"}
+
+- !powerShell:
+    command: .\Scripts\copy-voidos-tweaks.ps1
+    exeDir: true
+    wait: true
+    

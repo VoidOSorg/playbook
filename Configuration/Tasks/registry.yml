@@ -1,0 +1,38 @@
+---
+title: Registry
+description: Registry optimizations
+privilege: TrustedInstaller
+
+actions:
+  - !writeStatus: {status: "Applying registry tweaks"}
+
+  # Telemetry
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection'
+      value: 'AllowTelemetry'
+      type: REG_DWORD
+      data: '0'
+
+  # Explorer performance
+  - !registryValue:
+      path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
+      value: 'DisablePreviewDesktop'
+      type: REG_DWORD
+      data: '1'
+
+  # Disable background apps
+  - !registryValue:
+      path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications'
+      value: 'GlobalUserDisabled'
+      type: REG_DWORD
+      data: '1'
+
+  # Game DVR off
+  - !registryValue:
+      path: 'HKCU\System\GameConfigStore'
+      value: 'GameDVR_Enabled'
+      type: REG_DWORD
+      data: '0'
+
+  - !powerShell:
+      command: 'Executables\Scripts\apply-registry.ps1'

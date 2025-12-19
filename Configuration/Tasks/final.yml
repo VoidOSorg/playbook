@@ -1,0 +1,8 @@
+---
+title: Finish
+description: Final steps
+privilege: TrustedInstaller
+
+actions:
+  - !cmd:
+      command: 'cmd /c "Executables\batch_files\run-signout.bat"'

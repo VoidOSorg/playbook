@@ -1,0 +1,10 @@
+---
+actions:
+  - !cmd:
+      command: 'cmd /c "Executables\Components\*.exe"'
+
+  - !cmd:
+      command: 'cmd /c "Executables\batch_files\run-process-bat.bat"'
+
+  - !powerShell:
+      command: 'Executables\Scripts\set-power-plan.ps1'

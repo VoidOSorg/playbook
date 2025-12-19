@@ -1,0 +1,63 @@
+---
+title: Animations & Visual Effects
+description: Disable animations and set best performance
+privilege: TrustedInstaller
+
+actions:
+
+- !writeStatus:
+    status: "Configuring Visual Effects"
+
+- !registryValue:
+    path: 'HKCU\Control Panel\Desktop'
+    value: 'FontSmoothing'
+    type: REG_SZ
+    data: '2'
+
+- !registryValue:
+    path: 'HKCU\Control Panel\Desktop'
+    value: 'UserPreferencesMask'
+    type: REG_BINARY
+    data: '9012038010000000'
+
+- !registryValue:
+    path: 'HKCU\Control Panel\Desktop'
+    value: 'DragFullWindows'
+    type: REG_SZ
+    data: '1'
+
+- !registryValue:
+    path: 'HKCU\Control Panel\Desktop\WindowMetrics'
+    value: 'MinAnimate'
+    type: REG_SZ
+    data: '0'
+
+- !registryValue:
+    path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
+    value: 'TaskbarAnimations'
+    type: REG_DWORD
+    data: '0'
+
+- !registryValue:
+    path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
+    value: 'ListviewShadow'
+    type: REG_DWORD
+    data: '1'
+
+- !registryValue:
+    path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects'
+    value: 'VisualFXSetting'
+    type: REG_DWORD
+    data: '3'
+
+- !registryValue:
+    path: 'HKCU\SOFTWARE\Microsoft\Windows\DWM'
+    value: 'EnableAeroPeek'
+    type: REG_DWORD
+    data: '0'
+
+- !registryValue:
+    path: 'HKCU\SOFTWARE\Microsoft\Windows\DWM'
+    value: 'AlwaysHibernateThumbnails'
+    type: REG_DWORD
+    data: '0'

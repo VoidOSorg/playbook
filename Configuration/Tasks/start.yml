@@ -1,0 +1,7 @@
+---
+title: Start
+description: Initial setup
+privilege: TrustedInstaller
+
+actions:
+  - !writeStatus: {status: "Preparing system"}

@@ -1,0 +1,28 @@
+---
+title: VoidOS
+description: VoidOS Main Configuration
+privilege: TrustedInstaller
+
+actions:
+  - !writeStatus: {status: "Starting VoidOS"}
+
+  - !task: {path: 'Tasks\start.yml'}
+  - !task: {path: 'Tasks\Components\app-win32.yml'}
+  - !task: {path: 'Tasks\Components\appx.yml'}
+  - !task: {path: 'Tasks\animations.yml'}
+  - !task: {path: 'Tasks\customization.yml'}
+  - !task: {path: 'Tasks\services.yml'}
+  - !task: {path: 'Tasks\optimizations.yml'}
+  - !task: {path: 'Tasks\registry.yml'}
+  - !task: {path: 'Tasks\regs\search.yml'}
+  - !task: {path: 'Tasks\regs\start-menu.yml'}
+  - !task: {path: 'Tasks\regs\taskbar.yml'}
+  - !task: {path: 'Tasks\final.yml'}
+
+  - !taskKill: {name: "SearchApp", errorAction: Ignore}
+  - !taskKill: {name: "SearchHost", errorAction: Ignore}
+  - !taskKill: {name: "RuntimeBroker", errorAction: Ignore}
+  - !taskKill: {name: "TextInputHost", errorAction: Ignore}
+  - !taskKill: {name: "ShellExperienceHost", errorAction: Ignore}
+  - !taskKill: {name: "backgroundTaskHost", errorAction: Ignore}
+  - !taskKill: {name: "Widgets", errorAction: Ignore}

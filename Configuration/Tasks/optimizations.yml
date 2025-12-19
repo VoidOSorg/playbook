@@ -1,0 +1,41 @@
+---
+title: Optimizations
+description: System performance optimizations
+privilege: TrustedInstaller
+
+actions:
+  - !writeStatus: {status: "Applying system optimizations"}
+
+  # Power Plan
+  - !writeStatus: {status: "Setting High Performance Power Plan", option: "set-power-plan"}
+  - !powerShell:
+      option: "set-power-plan"
+      wait: true
+      exeDir: true
+      errorAction: Ignore
+      command: >-
+        ..\..\Executables\Scripts\set-power-plan.ps1
+
+  # Disable services
+  - !writeStatus: {status: "Disabling unnecessary services"}
+  - !powerShell:
+      wait: true
+      exeDir: true
+      errorAction: Ignore
+      command: >-
+        ..\..\Executables\Scripts\disable-services.ps1
+
+  # Scheduler / Latency
+  - !writeStatus: {status: "Optimizing scheduler and latency"}
+  - !powerShell:
+      wait: true
+      exeDir: true
+      errorAction: Ignore
+      command: >-
+        ..\..\Executables\Scripts\optimize-scheduler.ps1
+    
+        !powerShell:
+      exeDir: true
+      wait: true
+      command: '.\CLEAN.ps1'
+

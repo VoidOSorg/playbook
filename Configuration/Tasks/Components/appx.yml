@@ -1,0 +1,87 @@
+---
+title: APPX
+description: Complete removal of built-in Windows apps
+privilege: TrustedInstaller
+
+actions:
+
+  # ============================
+  # APPX DEBLOAT (CORE)
+  # ============================
+  - !writeStatus:
+      status: "Removing Built-in Windows Apps"
+
+  - !powerShell:
+      wait: true
+      exeDir: true
+      errorAction: Ignore
+      weight: 60
+      command: >-
+        .\APPX-REMOVER-DEFINITIVE.ps1
+
+
+  # ============================
+  # COPILOT HARD DISABLE (UI + POLICY)
+  # ============================
+  - !writeStatus:
+      status: "Disabling Windows Copilot"
+
+  - !registryKey:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot'
+      operation: add
+
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot'
+      value: 'TurnOffWindowsCopilot'
+      type: REG_DWORD
+      data: '1'
+
+
+  # ============================
+  # WIDGETS / WEB EXPERIENCE UI OFF
+  # ============================
+  - !writeStatus:
+      status: "Disabling Widgets UI"
+
+  - !registryValue:
+      path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
+      value: 'TaskbarDa'
+      type: REG_DWORD
+      data: '0'
+
+  - !registryValue:
+      path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
+      value: 'TaskbarMn'
+      type: REG_DWORD
+      data: '0'
+
+
+  # ============================
+  # PREVENT STORE REINSTALL
+  # ============================
+  - !writeStatus:
+      status: "Preventing App Reinstallation"
+
+  - !registryKey:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\WindowsStore'
+      operation: add
+
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\WindowsStore'
+      value: 'AutoDownload'
+      type: REG_DWORD
+      data: '2'
+
+
+  # ============================
+  # EXPLORER RESTART
+  # ============================
+  - !writeStatus:
+      status: "Restarting Explorer"
+
+  - !powerShell:
+      wait: true
+      exeDir: true
+      errorAction: Ignore
+      command: >-
+        Stop-Process -Name explorer -Force

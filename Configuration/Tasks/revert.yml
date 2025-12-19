@@ -1,0 +1,8 @@
+---
+title: Revert
+description: Cleanup
+privilege: Admin
+
+actions:
+  - !run:
+      cmd: "echo Revert complete"
