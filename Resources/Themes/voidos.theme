@@ -1,0 +1,72 @@
+[Theme]
+DisplayName=VoidOS Dark
+ThemeId={A91D4C2E-9B3E-4E6F-9C4A-VOIDOS2025}
+
+; =========================
+; DESKTOP
+; =========================
+[Control Panel\Desktop]
+Wallpaper=C:\Windows\VoidOS\Wallpapers\wllppr0.png
+Pattern=
+PicturePosition=4
+TileWallpaper=0
+ScreenSaveActive=0
+
+; BEST PERFORMANCE
+UserPreferencesMask=90,12,03,80,10,00,00,00
+
+; =========================
+; WINDOW METRICS
+; =========================
+[Control Panel\Desktop\WindowMetrics]
+MinAnimate=0
+
+; =========================
+; COLORS
+; =========================
+[Control Panel\Colors]
+Background=0 0 0
+
+; =========================
+; VISUAL STYLE
+; =========================
+[VisualStyles]
+Path=%windir%\Resources\Themes\Aero\Aero.msstyles
+ColorStyle=NormalColor
+Size=NormalSize
+AutoColorization=0
+ColorizationColor=0xC0202020
+SystemMode=Dark
+AppMode=Dark
+VisualStyleVersion=10
+
+; =========================
+; PERSONALIZATION
+; =========================
+[Software\Microsoft\Windows\CurrentVersion\Themes\Personalize]
+AppsUseLightTheme=0
+SystemUsesLightTheme=0
+EnableTransparency=0
+
+; =========================
+; DWM
+; =========================
+[Software\Microsoft\Windows\DWM]
+EnableAeroPeek=0
+
+; =========================
+; EXPLORER
+; =========================
+[Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+TaskbarAnimations=0
+ListviewAlphaSelect=0
+ListviewShadow=0
+
+; =========================
+; SOUNDS
+; =========================
+[Sounds]
+SchemeName=No Sounds
+
+[MasterThemeSelector]
+MTSM=RJSPBS
