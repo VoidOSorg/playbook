@@ -205,7 +205,7 @@ Windows Registry Editor Version 5.00
 
 
 [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USB]
-“DisableSelectiveSuspend”=dword:00000001
+"DisableSelectiveSuspend"=dword:00000001
 
 [Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power]
 "EnergyEstimationEnabled"=dword:00000000
@@ -383,7 +383,7 @@ Windows Registry Editor Version 5.00
 
 
 [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\USB]
-“DisableSelectiveSuspend”=dword:00000001
+"DisableSelectiveSuspend"=dword:00000001
 
 [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WbioSrvc]
 "Start"=dword:00000004
@@ -427,7 +427,7 @@ Windows Registry Editor Version 5.00
 
 [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Power]
 
-HiberBootEnabled"=dword:00000000
+"HiberBootEnabled"=dword:00000000
 
 [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power]
 
