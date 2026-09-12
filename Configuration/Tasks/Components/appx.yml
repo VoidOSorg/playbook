@@ -17,7 +17,7 @@ actions:
       errorAction: Ignore
       weight: 60
       command: >-
-        .\APPX-REMOVER-DEFINITIVE.ps1
+        .\Scripts\APPX-REMOVER-DEFINITIVE.ps1
 
 
   # ============================
@@ -81,7 +81,6 @@ actions:
 
   - !powerShell:
       wait: true
-      exeDir: true
       errorAction: Ignore
       command: >-
         Stop-Process -Name explorer -Force

@@ -13,6 +13,92 @@ actions:
       type: REG_DWORD
       data: '0'
 
+  # SmartScreen (apps + Edge + IE) - remove-defender
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\System'
+      value: 'EnableSmartScreen'
+      type: REG_DWORD
+      data: '0'
+      option: "remove-defender"
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter'
+      value: 'EnabledV9'
+      type: REG_DWORD
+      data: '0'
+      option: "remove-defender"
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\System'
+      value: 'ShellSmartScreenLevel'
+      type: REG_DWORD
+      data: '0'
+      option: "remove-defender"
+
+  # Windows Defender hardening (policies) - remove-defender
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender'
+      value: 'DisableAntiSpyware'
+      type: REG_DWORD
+      data: '1'
+      option: "remove-defender"
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection'
+      value: 'DisableRealtimeMonitoring'
+      type: REG_DWORD
+      data: '1'
+      option: "remove-defender"
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection'
+      value: 'DisableBehaviorMonitoring'
+      type: REG_DWORD
+      data: '1'
+      option: "remove-defender"
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection'
+      value: 'DisableOnAccessProtection'
+      type: REG_DWORD
+      data: '1'
+      option: "remove-defender"
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection'
+      value: 'DisableScanOnRealtimeEnable'
+      type: REG_DWORD
+      data: '1'
+      option: "remove-defender"
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection'
+      value: 'DisableIOAVProtection'
+      type: REG_DWORD
+      data: '1'
+      option: "remove-defender"
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection'
+      value: 'DisableRoutinelyTakingAction'
+      type: REG_DWORD
+      data: '1'
+      option: "remove-defender"
+
+  # Defender Cloud / sample submission - remove-defender
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\SpyNet'
+      value: 'SpyNetReporting'
+      type: REG_DWORD
+      data: '0'
+      option: "remove-defender"
+  - !registryValue:
+      path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\SpyNet'
+      value: 'SubmitSamplesConsent'
+      type: REG_DWORD
+      data: '0'
+      option: "remove-defender"
+
+  # Kernel 0 performance tweaks (VoidOS Default = 0x18) - kernel-tweaks
+  - !registryValue:
+      path: 'HKLM\SYSTEM\CurrentControlSet\Control\PriorityControl'
+      value: 'Win32PrioritySeparation'
+      type: REG_DWORD
+      data: '24'
+      option: "kernel-tweaks"
+
   # Explorer performance
   - !registryValue:
       path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
@@ -35,4 +121,6 @@ actions:
       data: '0'
 
   - !powerShell:
-      command: 'Executables\Scripts\apply-registry.ps1'
+      command: '.\Scripts\apply-registry.ps1'
+      exeDir: true
+      wait: true

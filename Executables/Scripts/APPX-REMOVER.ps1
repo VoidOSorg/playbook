@@ -1,9 +1,11 @@
+param(
+    [string[]]$Packages
+)
+
 # ==========================
 # REQUIRE ADMIN
 # ==========================
-if (-not ([Security.Principal.WindowsPrincipal]
-    [Security.Principal.WindowsIdentity]::GetCurrent()
-).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     Write-Host "Run as Administrator"
     exit 1
 }
@@ -11,6 +13,9 @@ if (-not ([Security.Principal.WindowsPrincipal]
 # ==========================
 # APP LIST (KEY PART)
 # ==========================
+if ($Packages) {
+    $Apps = $Packages
+} else {
 $Apps = @(
     # CORE BLOAT
     "Microsoft.549981C3F5F10",              # Cortana
@@ -49,6 +54,7 @@ $Apps = @(
     "Microsoft.Microsoft3DViewer",
     "MixedReality.Portal"
 )
+}
 
 # ==========================
 # REMOVE FOR ALL USERS

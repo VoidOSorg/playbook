@@ -1,25 +1,61 @@
-<h1>
-  <img src="https://i.ibb.co/xSVk7jRK/image.png" alt="VoidOS Logo" width="40" style="vertical-align:middle;"> 
+<h1 align="center">
+  <img src="https://i.ibb.co/xSVk7jRK/image.png" alt="VoidOS Logo" width="48"> 
   VoidOS Playbook
 </h1>
 
-The <strong>VoidOS Playbook</strong> is a pre-configured set of tweaks, scripts, and optimizations for <strong>Windows 10</strong>. Its purpose is to enhance your system for <strong>gaming performance</strong> and <strong>productivity</strong>, making your computer faster, smoother, and more efficient without requiring manual adjustments.
+<p align="center">
+  <img alt="Windows" src="https://img.shields.io/badge/Windows%2010-0078D7?style=for-the-badge&logo=windows&logoColor=white" />
+  <img alt="AME Wizard" src="https://img.shields.io/badge/AME%20Wizard-6A1FB9?style=for-the-badge" />
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" />
+</p>
 
-## Features
+<p align="center"><strong>VoidOS Playbook</strong> is a pre-configured AME Wizard playbook that transforms Windows&nbsp;10 into a lean, fast and responsive operating system — focused on <strong>gaming performance</strong> and <strong>productivity</strong>, with zero manual tuning required.</p>
 
-- <strong>Performance Optimization</strong>: Adjust system settings to improve speed and responsiveness.  
-- <strong>Gaming Enhancements</strong>: Optimize graphics, background processes, and system resources for higher FPS and lower latency.  
-- <strong>Productivity Tweaks</strong>: Speed up application launch times, multitasking, and overall workflow efficiency.  
-- <strong>Automated & Safe</strong>: Apply changes automatically, focusing on safe and reversible tweaks.  
+---
 
-## Purpose
+## What is it?
 
-The playbook acts like a <strong>recipe for your system</strong>, applying proven configurations to save time and maximize the potential of your hardware. It’s designed for users who want to get the most out of Windows 10 with minimal manual setup.
+Instead of hunting through dozens of tutorials, registry edits and third-party tools, the playbook bundles everything into a **single automated pass**. It installs into **AME Wizard** and handles the whole process for you: it cleans, tweaks, customizes and optimizes your system from start to finish.
 
-## Contributing
+> Think of it as a **recipe for your system**: proven configurations applied automatically so you get the most out of your hardware.
 
-Contributions are welcome! If you have new tweaks, improvements, or suggestions, feel free to submit a pull request or open an issue.  
+## ✨ Features
 
-## License
+- 🚀 **Performance Optimization** — system settings tuned for speed and responsiveness.
+- 🎮 **Gaming Enhancements** — higher FPS, lower latency, cleaner resource usage.
+- 🧹 **Automated Debloating** — removes bloatware, unused AppX packages, Cortana leftovers and more.
+- 🎨 **Full Customization** — VoidOS theme, macOS-inspired cursors, wallpaper and taskbar branding.
+- 🧩 **Reliable Uninstallers** — proper removal of Microsoft Edge, OneDrive and Teams.
+- ⚡ **Advanced Tweaks** — power plan, services, registry, kernel, search and start-menu optimizations.
+- 🛡️ **Safe & Reversible** — every task is grouped and optional, focused on safe, non-destructive changes.
 
-Distributed under the <strong>MIT License</strong>. See `LICENSE` for more information.
+## 📸 Screenshots
+
+| Installation | Applying playbook | Result |
+|:---:|:---:|:---:|
+| ![Installation](Screenshots/installation.png) | ![Installing](Screenshots/installing.png) | ![Ready](Screenshots/processi-avvio.png) |
+
+## 🚀 Getting started
+
+1. Download the latest **`.apbx`** release from the [Releases](https://github.com/VoidOSorg/playbook/releases) page.
+2. Open **AME Wizard** → **Playbook** → load the playbook package.
+3. Choose your preferred options in the wizard and press **Start**.
+4. Let the playbook run — no manual steps needed.
+
+## 📁 Repository layout
+
+```
+Configuration/      → playbook tasks (YAML) + order definition
+Executables/        → scripts, modules and assets used by the playbook
+Resources/          → themes, wallpapers, cursors and VoidOS-Tweaks toolbox
+Screenshots/        → preview images for the README
+playbook.conf       → AME Wizard playbook configuration (UI pages)
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! If you have new tweaks, improvements, or suggestions, feel free to submit a pull request or open an issue.
+
+## 📜 License
+
+Distributed under the **MIT License**. See `LICENSE` for more information.

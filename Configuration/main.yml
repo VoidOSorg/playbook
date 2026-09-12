@@ -11,6 +11,7 @@ actions:
   - !task: {path: 'Tasks\Components\appx.yml'}
   - !task: {path: 'Tasks\animations.yml'}
   - !task: {path: 'Tasks\customization.yml'}
+  - !task: {path: 'Tasks\browsers.yml'}
   - !task: {path: 'Tasks\services.yml'}
   - !task: {path: 'Tasks\optimizations.yml'}
   - !task: {path: 'Tasks\registry.yml'}

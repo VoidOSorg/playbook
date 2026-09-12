@@ -7,23 +7,13 @@ actions:
   - !writeStatus: {status: "Applying system optimizations"}
 
   # Power Plan
-  - !writeStatus: {status: "Setting High Performance Power Plan", option: "set-power-plan"}
-  - !powerShell:
-      option: "set-power-plan"
-      wait: true
-      exeDir: true
-      errorAction: Ignore
-      command: >-
-        ..\..\Executables\Scripts\set-power-plan.ps1
-
-  # Disable services
-  - !writeStatus: {status: "Disabling unnecessary services"}
+  - !writeStatus: {status: "Setting High Performance Power Plan"}
   - !powerShell:
       wait: true
       exeDir: true
       errorAction: Ignore
       command: >-
-        ..\..\Executables\Scripts\disable-services.ps1
+        .\Scripts\set-power-plan.ps1
 
   # Scheduler / Latency
   - !writeStatus: {status: "Optimizing scheduler and latency"}
@@ -32,10 +22,14 @@ actions:
       exeDir: true
       errorAction: Ignore
       command: >-
-        ..\..\Executables\Scripts\optimize-scheduler.ps1
-    
-        !powerShell:
+        .\Scripts\optimize-scheduler.ps1
+
+  # Clean taskbar + pin File Explorer + chosen browser
+  # (runs as elevated current user so HKCU tweaks hit the right profile and no extra UAC pops)
+  - !powerShell:
       exeDir: true
       wait: true
-      command: '.\CLEAN.ps1'
+      runas: currentUserElevated
+      command: >-
+        .\Scripts\CLEAN.ps1
 

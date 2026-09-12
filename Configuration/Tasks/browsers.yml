@@ -1,0 +1,37 @@
+---
+title: Browsers
+description: Install the selected browser from bundled offline installers
+privilege: TrustedInstaller
+
+actions:
+  - !writeStatus: {status: "Installing selected browser"}
+
+  # Brave - bundled offline installer
+  - !writeStatus: {status: "Installing Brave (offline installer)"}
+  - !run:
+      option: "browser-brave"
+      wait: true
+      exeDir: true
+      runas: currentUserElevated
+      exe: 'VoidOSModules\Executables\BraveBrowserSetup-BRV013.exe'
+      args: "/silent /install"
+
+  # Chrome - bundled offline installer
+  - !writeStatus: {status: "Installing Chrome (offline installer)"}
+  - !run:
+      option: "browser-chrome"
+      wait: true
+      exeDir: true
+      runas: currentUserElevated
+      exe: 'VoidOSModules\Executables\ChromeSetup.exe'
+      args: "/silent /install"
+
+  # Firefox - bundled offline installer
+  - !writeStatus: {status: "Installing Firefox (offline installer)"}
+  - !run:
+      option: "browser-firefox"
+      wait: true
+      exeDir: true
+      runas: currentUserElevated
+      exe: 'VoidOSModules\Executables\Firefox.exe'
+      args: "/S"

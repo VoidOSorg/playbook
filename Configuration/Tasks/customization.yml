@@ -5,34 +5,60 @@ privilege: TrustedInstaller
 
 actions:
 
-- !writeStatus: {status: "Applying paths"}
+- !writeStatus: {status: "Applying VoidOS wallpaper"}
 - !powerShell:
-    exeDir: true
     wait: true
-    command: .\prepare-voidos-wallpaper.ps1
- 
+    exeDir: true
+    command: '.\Scripts\prepare-voidos-wallpaper.ps1'
+
+# Radio: dark / light theme (also sets system light mode)
 - !powerShell:
-    command: .\COPY-CONFIGURATOR.ps1
-    exeDir: true
     wait: true
+    exeDir: true
     runas: currentUser
+    option: "theme-dark"
+    command: '.\Scripts\switch-to-dark-theme.ps1'
 
-
-
+- !powerShell:
+    wait: true
+    exeDir: true
+    runas: currentUser
+    option: "theme-light"
+    command: '.\Scripts\switch-to-light-theme.ps1'
 
 - !writeStatus: {status: "Applying VoidOS Themes"}
 
+# Copy theme into Windows\Resources (always, so it exists)
 - !powerShell:
-    exeDir: true
     wait: true
-    command: |
-      Start-Process "C:\Windows\Resources\Themes\voidos.theme"
+    exeDir: true
+    command: '.\Scripts\copy-theme.ps1'
 
+# Apply the .theme to the current user profile
+- !powerShell:
+    wait: true
+    exeDir: true
+    runas: currentUser
+    command: '.\Scripts\apply-theme.ps1'
 
 - !writeStatus: {status: "Applying VoidOS Branding"}
 
 - !powerShell:
-    command: .\Scripts\copy-voidos-tweaks.ps1
-    exeDir: true
+    command: '.\Scripts\copy-voidos-tweaks.ps1'
     wait: true
-    
+    runas: currentUser
+    option: "copy-tools"
+
+- !powerShell:
+    option: "install-themes"
+    wait: true
+    exeDir: true
+    runas: currentUserElevated
+    command: '.\Scripts\install-themes.ps1'
+
+- !powerShell:
+    option: "install-cursors"
+    wait: true
+    exeDir: true
+    runas: currentUserElevated
+    command: '.\Scripts\install-cursors.ps1'

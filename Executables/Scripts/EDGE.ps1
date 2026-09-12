@@ -43,7 +43,7 @@ function Restore-DeviceRegion {
             [microsoft.win32.registry]::SetValue('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Control Panel\DeviceRegion', 'DeviceRegion', $originalNation, [Microsoft.Win32.RegistryValueKind]::DWord) | Out-Null
             [microsoft.win32.registry]::SetValue('HKEY_USERS\.DEFAULT\Control Panel\International\Geo', 'Nation', $originalNation, [Microsoft.Win32.RegistryValueKind]::String) | Out-Null
             
-            Remove-ItemProperty -Path "HKCU:\Control Panel\International\Geo" -Name "OriginalNation" -ErrorAction SilentlyContinue | Out-Null
+            Remove-ItemProperty -Path "Registry::HKEY_USERS\.DEFAULT\Control Panel\International\Geo" -Name "OriginalNation" -ErrorAction SilentlyContinue | Out-Null
             
             Write-Host "[RestoreDeviceRegion] Device region and Nation restored to: $originalNation"
         } else {
@@ -93,48 +93,95 @@ function Uninstall-Process {
 
     # Setting windir temporarily to an empty string allows the Edge uninstallation to work
     # "Uninstall allowed: No Windows directory set as env var" (Legacy, not found in newer updates)
+    $originalWindir = $env:windir
     $env:windir = ""
 
-    $uninstallString = (Get-ItemProperty -Path $registryPath).UninstallString
-    $uninstallArguments = (Get-ItemProperty -Path $registryPath).UninstallArguments
+    try {
+        $uninstallString = (Get-ItemProperty -Path $registryPath).UninstallString
+        $uninstallArguments = (Get-ItemProperty -Path $registryPath).UninstallArguments
 
-    if ([string]::IsNullOrEmpty($uninstallString) -or [string]::IsNullOrEmpty($uninstallArguments)) {
-        Write-Host "[$Mode] Cannot find uninstall methods for $Mode"
-        return
+        if ([string]::IsNullOrEmpty($uninstallString) -or [string]::IsNullOrEmpty($uninstallArguments)) {
+            Write-Host "[$Mode] Cannot find uninstall methods for $Mode"
+            return
+        }
+
+        $uninstallArguments += " --force-uninstall --delete-profile"
+
+        if ($uninstallString -match '^\s*"([^"]+)"') {
+            $uninstallExe = $matches[1]
+        } else {
+            $uninstallExe = ($uninstallString -split '\s+')[0]
+        }
+
+        if (!(Test-Path -Path $uninstallExe)) {
+            Write-Host "[$Mode] setup.exe not found at: $uninstallExe"
+            return
+        }
+
+        $process = Start-Process -FilePath $uninstallExe -ArgumentList $uninstallArguments -Wait -Verbose -NoNewWindow -PassThru
+        Write-Host "[$Mode] Uninstallation process exit code: $($process.ExitCode)"
+
+        if ((Get-ItemProperty -Path $baseKey).IsEdgeStableUninstalled -eq 1) {
+            Write-Host "[$Mode] Edge Stable has been successfully uninstalled"
+        }
     }
-
-    $uninstallArguments += " --force-uninstall --delete-profile"
-
-    # $uninstallCommand = "`"$uninstallString`"" + $uninstallArguments
-    if (!(Test-Path -Path $uninstallString)) {
-        Write-Host "[$Mode] setup.exe not found at: $uninstallString"
-        return
-    }
-
-    $process = Start-Process -FilePath $uninstallString -ArgumentList $uninstallArguments -Wait -Verbose -NoNewWindow -PassThru
-    Write-Host "[$Mode] Uninstallation process exit code: $($process.ExitCode)"
-
-    if ((Get-ItemProperty -Path $baseKey).IsEdgeStableUninstalled -eq 1) {
-        Write-Host "[$Mode] Edge Stable has been successfully uninstalled"
+    finally {
+        $env:windir = $originalWindir
     }
 }
 
 function Uninstall-Edge {
+    # --- Unlock the official Edge uninstaller (Chris Titus / WinUtil method) ---
+    # 1) Remove the NoRemove restriction so the uninstaller may proceed
     Remove-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge" -Name "NoRemove" -ErrorAction SilentlyContinue | Out-Null
-   
     [microsoft.win32.registry]::SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdateDev", "AllowUninstall", 1, [Microsoft.Win32.RegistryValueKind]::DWord) | Out-Null
 
-    Uninstall-Process -Key '{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}'
-    
+    # 2) Create a dummy MicrosoftEdge.exe in the legacy SystemApps folder.
+    #    This tricks Windows into thinking the "legacy Edge" is present, which
+    #    unlocks the real uninstaller for a system-level removal.
+    $dummyDir = "$env:SystemRoot\SystemApps\Microsoft.MicrosoftEdge_8wekyb3d8bbwe"
+    New-Item -ItemType Directory -Path $dummyDir -Force -ErrorAction SilentlyContinue | Out-Null
+    if (-not (Test-Path "$dummyDir\MicrosoftEdge.exe")) {
+        New-Item -ItemType File -Path "$dummyDir\MicrosoftEdge.exe" -Force -ErrorAction SilentlyContinue | Out-Null
+    }
+
+    # 3) Locate the installed Chromium setup.exe (any version, last one wins)
+    $candidates = @()
+    foreach ($base in @("$env:ProgramFiles(x86)\Microsoft\Edge", "$env:ProgramFiles\Microsoft\Edge")) {
+        if (Test-Path $base) {
+            $found = Get-ChildItem -Path $base -Recurse -Filter "setup.exe" -ErrorAction SilentlyContinue |
+                Where-Object { $_.DirectoryName -match "\\Installer$" }
+            if ($found) { $candidates += $found }
+        }
+    }
+    $setup = $candidates | Sort-Object FullName | Select-Object -Last 1
+
+    if (-not $setup) {
+        Write-Host "[EdgeBrowser] setup.exe not found, Edge may not be installed" -ForegroundColor Yellow
+        return
+    }
+
+    Write-Host "[EdgeBrowser] Running: $($setup.FullName) --uninstall --system-level --force-uninstall --delete-profile"
+    Start-Process -FilePath $setup.FullName `
+        -ArgumentList "--uninstall --system-level --force-uninstall --delete-profile" `
+        -Wait -WindowStyle Hidden -PassThru | ForEach-Object {
+            Write-Host "[EdgeBrowser] uninstaller exit code: $($_.ExitCode)"
+        }
+
+    # 4) Remove leftover shortcuts
     @( "$env:ProgramData\Microsoft\Windows\Start Menu\Programs",
         "$env:PUBLIC\Desktop",
         "$env:USERPROFILE\Desktop" ) | ForEach-Object {
         $shortcutPath = Join-Path -Path $_ -ChildPath "Microsoft Edge.lnk"
         if (Test-Path -Path $shortcutPath) {
-            Remove-Item -Path $shortcutPath -Force
+            Remove-Item -Path $shortcutPath -Force -ErrorAction SilentlyContinue
         }
     }
 
+    # 5) Block reinstall via updates
+    [microsoft.win32.registry]::SetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\EdgeUpdate", "DoNotUpdateToEdgeWithChromium", 1, [Microsoft.Win32.RegistryValueKind]::DWord) | Out-Null
+
+    Write-Host "[EdgeBrowser] Microsoft Edge removed." -ForegroundColor Green
 }
 
 function Uninstall-WebView {

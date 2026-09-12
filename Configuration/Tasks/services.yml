@@ -1,10 +1,22 @@
 ---
+title: Services
+description: Disable unnecessary services (batched, with progress)
+privilege: TrustedInstaller
+
 actions:
-  - !cmd:
-      command: 'cmd /c "Executables\Components\*.exe"'
+  - !writeStatus: {status: "Disabling unnecessary services"}
 
-  - !cmd:
-      command: 'cmd /c "Executables\batch_files\run-process-bat.bat"'
-
+  # Batch disable (single fast pass, per-service progress + timing)
   - !powerShell:
-      command: 'Executables\Scripts\set-power-plan.ps1'
+      exeDir: true
+      wait: true
+      command: >-
+        .\Scripts\disable-services.ps1
+
+  # Windows Defender services (only when "remove-defender" is checked)
+  - !powerShell:
+      exeDir: true
+      wait: true
+      option: "remove-defender"
+      command: >-
+        .\Scripts\disable-services.ps1 -IncludeDefender

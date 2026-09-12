@@ -3,7 +3,7 @@
 :: Permissions taken from stock and functional Windows 11 for reference
 
 whoami /user | find /i "S-1-5-18" > nul 2>&1 || (
-	call RunAsTI.cmd "%~f0" %*
+	powershell -command "Start-Process '%~f0' -Verb RunAs"
 	exit /b
 )
 
@@ -11,9 +11,9 @@ set "folder=%windir%\Temp"
 
 echo This script will fix errors 2502 and 2503 with Windows installers by resetting the Windows TEMP folder permissions.
 echo This issue is not related to Atlas.
-echo]
+echo.
 pause
-echo]
+echo.
 
 echo Taking ownership of TEMP folder as SYSTEM...
 takeown /f "%folder%" /r /d y > nul
@@ -35,7 +35,7 @@ echo Clearing Windows temporary files...
 :: no error checking as some files and folders will be in use
 del /s /f /q "%folder%\*.*" > nul 2>&1
 
-echo]
+echo.
 echo Completed.
 pause
 exit /b

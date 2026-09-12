@@ -3,7 +3,7 @@
 
 [Version]
 signature="$CHICAGO$"
-macOS hight DPI cursors for Windows made by antiden
+; macOS hight DPI cursors for Windows made by antiden
 
 [DefaultInstall]
 CopyFiles = Scheme.Cur
