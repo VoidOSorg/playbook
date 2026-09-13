@@ -4,6 +4,13 @@ description: Final steps
 privilege: TrustedInstaller
 
 actions:
+  - !writeStatus: {status: "Installing VoidControlPanel"}
+
+  - !powerShell:
+      wait: true
+      exeDir: true
+      command: '.\Scripts\install-void-control-panel.ps1'
+
   - !run:
       exeDir: true
       exe: 'batch_files\run-signout.bat'
